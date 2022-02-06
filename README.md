@@ -11,10 +11,15 @@ Python way to move a piece on the board:
 
 Arduino should provide the string `g1f3`, according to the state of the sensors.
 
+## Wishlist
+
 - Possibility to "play" famous match, by reading a file containing all the moves.
 - Saving live match.
+- Remote games..?
 
 ## Useful Links
 - [Arduino Schematic and Code editor](https://www.circuito.io/)
 - [Python Chess](https://python-chess.readthedocs.io/en/latest/)
-- [Pure Data Python integration](http://puredata.info/Members/thomas/py/)
+- [Pure Data on RaspberryPI](https://puredata.info/docs/raspberry-pi)
+- [List of Pure Data objects (refere to Vanilla)](https://puredata.info/docs/ListOfPdExternals/)
+- [Pure Data MIDI tutorial](https://puredata.info/Members/fgadea/using-pd-with-a-midi-controller/at_download/file)
