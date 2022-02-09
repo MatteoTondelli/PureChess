@@ -23,3 +23,4 @@ Arduino should provide the string `g1f3`, according to the state of the sensors.
 - [Pure Data on RaspberryPI](https://puredata.info/docs/raspberry-pi)
 - [List of Pure Data objects (refere to Vanilla)](https://puredata.info/docs/ListOfPdExternals/)
 - [Pure Data MIDI tutorial](https://puredata.info/Members/fgadea/using-pd-with-a-midi-controller/at_download/file)
+- [The Theory and Technique of Electronic Music](http://msp.ucsd.edu/techniques/latest/book.pdf) (chapter 3.2 for control timing)
