@@ -1,4 +1,3 @@
-import chess
 
 
 class ArduinoBoard:
@@ -12,6 +11,7 @@ class ArduinoBoard:
         self.is_action_finished = False
 
     def find_move(self, board_str):
+        # TODO: check for illegal moves...
         actual_positions = [int(pos) for pos in board_str.split(", ")]
 
         if len(actual_positions) < len(self.stored_positions):
@@ -40,6 +40,8 @@ class ArduinoBoard:
 
 
 if __name__ == '__main__':
+
+    import chess
 
     board = chess.Board()
     arduino_board = ArduinoBoard()
