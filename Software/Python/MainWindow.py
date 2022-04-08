@@ -33,7 +33,7 @@ class MainWindow(QtWidgets.QMainWindow):
 
         self.patch_element_list = []
 
-        self.move_interval_sec = 1
+        self.move_interval_sec = 5
 
         # Add QSvgWidget to the appropriate layout in order to display the initial board state.
         self.svg_widget = QSvgWidget()
@@ -70,6 +70,8 @@ class MainWindow(QtWidgets.QMainWindow):
     def load_game(self):
         file_name, _ = QtWidgets.QFileDialog.getOpenFileName(self, "Pure Chess - Load Game", "", "PGN Files (*.pgn)")
         if file_name:
+            self.init_patch()
+
             pgn = open(file_name)
             self.game = chess.pgn.read_game(pgn)
             self.chess_board.reset()
@@ -77,6 +79,13 @@ class MainWindow(QtWidgets.QMainWindow):
                 self.chess_board.push(move)
                 self.update_svg_render(last_move=move)
                 self.update_pgn_trace()
+
+                # Extract from_square and to_square from move.
+                # from_square = chess.SQUARE_NAMES[move.from_square]
+                # to_square = chess.SQUARE_NAMES[move.to_square]
+                # Send MIDI command.
+                self.process_move_send_midi(move.from_square, move.to_square)
+
                 time.sleep(self.move_interval_sec)
 
     def update_svg_render(self, last_move=None):
@@ -122,20 +131,67 @@ class MainWindow(QtWidgets.QMainWindow):
 
     def init_patch(self):
         # Create instances of the patch elements to be used in the game.
+        # num_of_patch_elements = 4
+        # for i in range(num_of_patch_elements):
+
+        self.midi_actual_output_device.init_midi()
+
         new_patch_element = PatchElement(self.midi_actual_output_device, 0)
+        new_patch_element.pitch_control = ["a2", "b2", "c2", "d2"]
+        new_patch_element.lfo_rate_control = ["b1", "d1"]
+        new_patch_element.lfo_vca_control = ["a1", "c1"]
+        new_patch_element.lfo_rate_ctlin = 0
+        new_patch_element.lfo_vca_ctlin = 1
+        self.patch_element_list.append(new_patch_element)
+
+        new_patch_element = PatchElement(self.midi_actual_output_device, 1)
+        new_patch_element.pitch_control = ["e2", "f2", "g2", "h2"]
+        new_patch_element.lfo_rate_control = ["e1", "g1"]
+        new_patch_element.lfo_vca_control = ["f1", "h1"]
+        new_patch_element.lfo_rate_ctlin = 2
+        new_patch_element.lfo_vca_ctlin = 3
+        self.patch_element_list.append(new_patch_element)
+
+        new_patch_element = PatchElement(self.midi_actual_output_device, 2)
+        new_patch_element.pitch_control = ["a7", "b7", "c7", "d7"]
+        new_patch_element.lfo_rate_control = ["b8", "d8"]
+        new_patch_element.lfo_vca_control = ["a8", "c8"]
+        new_patch_element.lfo_rate_ctlin = 4
+        new_patch_element.lfo_vca_ctlin = 5
+        self.patch_element_list.append(new_patch_element)
+
+        new_patch_element = PatchElement(self.midi_actual_output_device, 3)
+        new_patch_element.pitch_control = ["e7", "f7", "g7", "h7"]
+        new_patch_element.lfo_rate_control = ["e8", "g8"]
+        new_patch_element.lfo_vca_control = ["f8", "h8"]
+        new_patch_element.lfo_rate_ctlin = 6
+        new_patch_element.lfo_vca_ctlin = 7
         self.patch_element_list.append(new_patch_element)
 
     def process_move_send_midi(self, control, new_value):
+        # TODO: when a piece is captured, send general trigger to the patch.
         # Find the control.
         square_name = chess.SQUARE_NAMES[control]
         for element in self.patch_element_list:
+            # Compute the value change.
+            start = int(square_name[1])
+            stop = int(chess.SQUARE_NAMES[new_value][1])
+            if chess.Color == chess.WHITE:
+                change = stop - start
+            else:
+                change = start - stop
             if square_name in element.pitch_control:
                 element.pitch_control.remove(square_name)
                 element.pitch_control.append(chess.SQUARE_NAMES[new_value])
-                # Compute the value change.
-                start = int(square_name[1])
-                stop = int(chess.SQUARE_NAMES[new_value][1])
-                element.change_pitch(stop - start)
+                element.change_pitch(change)
+            elif square_name in element.lfo_rate_control:
+                element.lfo_rate_control.remove(square_name)
+                element.lfo_rate_control.append(chess.SQUARE_NAMES[new_value])
+                element.change_lfo_rate(change)
+            elif square_name in element.lfo_vca_control:
+                element.lfo_vca_control.remove(square_name)
+                element.lfo_vca_control.append(chess.SQUARE_NAMES[new_value])
+                element.change_lfo_vca(change)
 
 
 ########################################################################################################################

@@ -32,6 +32,10 @@ class MIDIDevice:
         midi_command = 0x90 + channel
         self.midi_out.write([[[midi_command, value], 0]])
 
+    def control_change(self, channel, value):
+        midi_command = 0xB0
+        self.midi_out.write([[[midi_command, channel, value], 0]])
+
 
 class MIDI:
 
@@ -74,5 +78,6 @@ if __name__ == "__main__":
     #             pass
     my_device = devices[10]
     my_device.midi_out = pygame.midi.Output(my_device.index)
-    my_device.write()
-    my_device.write()
+    # my_device.write()
+    # my_device.write()
+    my_device.control_change(1, 24)
