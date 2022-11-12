@@ -30,3 +30,4 @@ fp-info-cache
 
 # Pycharm folders
 .idea/
+__pycache__
