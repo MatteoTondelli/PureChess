@@ -4,7 +4,9 @@ import pygame.midi
 
 
 class MIDIDevice:
-
+    """
+    This class describes a general MIDI device.
+    """
     def __init__(self):
         self.index = 0
         self.interface = ""
@@ -38,11 +40,14 @@ class MIDIDevice:
 
 
 class MIDI:
-
+    """
+    This class is used to interact with MIDI devices on the local PC.
+    """
     def __init__(self):
-        pygame.midi.init()
-
+        # Public attributes.
         self.device_list = []
+        # Initialization.
+        pygame.midi.init()
 
     def __del__(self):
         pygame.midi.quit()

@@ -2,11 +2,16 @@ import sys
 import time
 import re
 
+# TODO: import SerialCommunication instead...
+import serial.tools.list_ports
+
 import chess
 import chess.svg
 import chess.pgn
 
+# TODO: Can this class be merged with SerialCommunication.Arduino?
 from main import ArduinoBoard
+
 from MIDI import MIDI, MIDIDevice
 from PatchElements import PatchElement
 
@@ -46,16 +51,51 @@ class MainWindow(QtWidgets.QMainWindow):
         self.Ui.btn_start_simulation.clicked.connect(self.parse_simulation)
 
         # Initialization.
+        self.find_com_ports()
         self.find_midi_outputs()
+
+    def find_com_ports(self):
+        # Create a QComboBox and add it to the menu.
+        cb_com_names = QtWidgets.QComboBox()
+        font = QtGui.QFont("Consolas", 9)
+        cb_com_names.setFont(font)
+        com_port_action = QtWidgets.QWidgetAction(self.Ui.menu_com_name)
+        com_port_action.setDefaultWidget(cb_com_names)
+        self.Ui.menu_com_name.addAction(com_port_action)
+        # Connect COM port selection event.
+        cb_com_names.currentIndexChanged.connect(self.set_com_port)
+        # Add items.
+        ports = [device.name for device in serial.tools.list_ports.comports()]
+        cb_com_names.addItems(ports)
+        # Create a QComboBox and add it to the menu.
+        cb_com_baud_rates = QtWidgets.QComboBox()
+        font = QtGui.QFont("Consolas", 9)
+        cb_com_baud_rates.setFont(font)
+        com_port_action = QtWidgets.QWidgetAction(self.Ui.menu_com_baud)
+        com_port_action.setDefaultWidget(cb_com_baud_rates)
+        self.Ui.menu_com_baud.addAction(com_port_action)
+        # Connect baud rate selection event.
+        cb_com_baud_rates.currentIndexChanged.connect(self.set_baud_rate)
+        # Add items.
+        bauds = ["300", "600", "1200", "2400", "4800", "9600",
+                 "14400", "19200", "28800", "31250", "38400", "57600", "115200"]
+        cb_com_baud_rates.addItems(bauds)
+        cb_com_baud_rates.setCurrentText("9600")
+
+    def set_com_port(self, index):
+        pass
+
+    def set_baud_rate(self, index):
+        pass
 
     def find_midi_outputs(self):
         # Create a QComboBox and add it to the menu.
         cb_output_devices = QtWidgets.QComboBox()
         font = QtGui.QFont("Consolas", 9)
         cb_output_devices.setFont(font)
-        midi_output_action = QtWidgets.QWidgetAction(self.Ui.menuConfig)
+        midi_output_action = QtWidgets.QWidgetAction(self.Ui.menu_midi)
         midi_output_action.setDefaultWidget(cb_output_devices)
-        self.Ui.menuConfig.addAction(midi_output_action)
+        self.Ui.menu_midi.addAction(midi_output_action)
         # Connect MIDI Output selection event.
         cb_output_devices.currentIndexChanged.connect(self.set_midi_output)
         # Add items.

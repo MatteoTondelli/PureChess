@@ -136,6 +136,35 @@
     <property name="title">
      <string>Config</string>
     </property>
+    <widget class="QMenu" name="menu_com_port">
+     <property name="font">
+      <font>
+       <family>Consolas</family>
+      </font>
+     </property>
+     <property name="title">
+      <string>COM Port</string>
+     </property>
+     <widget class="QMenu" name="menu_com_name">
+      <property name="title">
+       <string>Name</string>
+      </property>
+     </widget>
+     <widget class="QMenu" name="menu_com_baud">
+      <property name="title">
+       <string>Baud</string>
+      </property>
+     </widget>
+     <addaction name="menu_com_name"/>
+     <addaction name="menu_com_baud"/>
+    </widget>
+    <widget class="QMenu" name="menu_midi">
+     <property name="title">
+      <string>MIDI</string>
+     </property>
+    </widget>
+    <addaction name="menu_com_port"/>
+    <addaction name="menu_midi"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuConfig"/>
@@ -154,6 +183,43 @@
     <font>
      <family>Consolas</family>
     </font>
+   </property>
+  </action>
+  <action name="actionBaud">
+   <property name="text">
+    <string>Baud</string>
+   </property>
+   <property name="font">
+    <font>
+     <family>Consolas</family>
+     <pointsize>9</pointsize>
+    </font>
+   </property>
+  </action>
+  <action name="actionName">
+   <property name="text">
+    <string>Name</string>
+   </property>
+   <property name="font">
+    <font>
+     <family>Consolas</family>
+     <pointsize>9</pointsize>
+    </font>
+   </property>
+  </action>
+  <action name="actionr">
+   <property name="text">
+    <string>r</string>
+   </property>
+  </action>
+  <action name="actionf">
+   <property name="text">
+    <string>f</string>
+   </property>
+  </action>
+  <action name="actionttt">
+   <property name="text">
+    <string>ttt</string>
    </property>
   </action>
  </widget>
