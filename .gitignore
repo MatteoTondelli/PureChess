@@ -30,7 +30,7 @@ fp-info-cache
 
 # Pycharm folders
 .idea/
-__pycache__
+__pycache__/
 
 # Sphinx
-_build
+_build/
