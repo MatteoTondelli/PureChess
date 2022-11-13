@@ -4,10 +4,10 @@ Sensor Board
 This board had been designed to perfectly fit the 25mm holes under each square of the chessboard, providing both a consistent positioning of the sensors 
 themselves and a *clean* way to implement all the connections.
 
-.. image:: images/sensor_board_front.svg
+.. image:: images/sensor_board_top.svg
    :width: 250
 
-.. image:: images/sensor_board_back.svg
+.. image:: images/sensor_board_bottom.svg
    :width: 250
 
 Two different mounting options are available.
